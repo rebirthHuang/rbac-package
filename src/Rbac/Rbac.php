@@ -12,13 +12,23 @@ class Rbac
 {
     private $permissionObj = null;
     const ADMIN_UID = 1;
+
     /**
-     * Rbac constructor
+     * Rbac constructor.
+     * @param $host
+     * @param $root
+     * @param $password
+     * @param $dbName
+     * @param $port
      * @throws Exception
      */
-    public function  __construct()
+    public function  __construct($host,$root,$password,$dbName,$port)
     {
-        $db = new DB();
+        try{
+            $db = new DB($host, $root, $password, $dbName,$port);
+        }catch (Exception $e){
+            throw new Exception("connect DB error");
+        }
         $this->permissionObj = new Permission($db);
     }
 
