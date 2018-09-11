@@ -1,0 +1,19 @@
+{
+    "name": "rebirth.huang/rbac-package",
+    "description": "rbac-package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "rebirth.huang",
+            "email": "rebirth.huang@corp.to8to.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rbac\\": "src/Rbac"
+        }
+    }
+}
