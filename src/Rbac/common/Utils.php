@@ -5,9 +5,14 @@
  * Date: 2018/9/11
  * Time: 19:44
  */
+namespace Rbac\common;
 
 class Utils
 {
+    /** 参数过滤
+     * @param $data
+     * @return array|mixed|string
+     */
     static function html($data)
     {
         $magic_quotes=get_magic_quotes_gpc();
@@ -27,6 +32,11 @@ class Utils
         return $data;
     }
 
+    /**
+     * html处理
+     * @param $html
+     * @return mixed
+     */
     static function checkHtml($html) {
         preg_match_all("/\<([^\<]+)\>/is", $html, $ms);
 
@@ -69,10 +79,9 @@ class Utils
     }
 
     /**
-     * 把hmlt标签转化成实体格式
-     * 参数可以为数组或者字符串
-     * @param mix $string
-     * @return mix
+     * 把html标签转化成实体格式
+     * @param $string
+     * @return array|null|string|string[]
      */
     static function dHtmlSpecialChars($string) {
         if(is_array($string)) {

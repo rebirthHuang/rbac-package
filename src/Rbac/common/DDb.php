@@ -3,6 +3,7 @@
 /**
  * Class DDb
  */
+namespace Rbac\common;
 
 class DDb
 {
@@ -15,6 +16,14 @@ class DDb
 	public $dbPrefix = '';
 	public $charset  = 'utf8';
 
+    /**
+     * DDb constructor.
+     * @param $host
+     * @param $root
+     * @param $password
+     * @param $dbName
+     * @param $port
+     */
 	public function __construct($host, $root, $password, $dbName,$port)
 	{
 		$this->dbHost   = $host;
@@ -23,18 +32,17 @@ class DDb
 		$this->dbPwd    = $password;
 		$this->dbName   = $dbName;
 		//实例化db
-		$this->db = new mysqli($this->dbHost, $this->dbUser, $this->dbPwd, $this->dbName);
+		$this->db = new \mysqli($this->dbHost, $this->dbUser, $this->dbPwd, $this->dbName);
 		$this->db->set_charset($this->charset);
 	}
 
 	/**
 	 * 执行sql语句，所有sql操作最终走到这里
 	 * @param  [string] $sql 要执行的sql语句
-	 * @return 结果集
+	 * @return resource
 	 */
 	public function exeSql($sql)
 	{
-		//file_put_contents('tsgswe.txt', $sql."\r\n", FILE_APPEND);
 		$res = $this->db->query($sql) or $this->printError();
 		return $res;
 	}
@@ -50,7 +58,7 @@ class DDb
 
 	/**
 	 * 取得最近一次insert操作的id
-	 * @return id
+	 * @return int
 	 */
 	public function getInsertId()
 	{
@@ -108,7 +116,11 @@ class DDb
 		return $datas;
 	}
 
-	//insert插入语句
+    /** insert插入语句
+     * @param $tabName
+     * @param $arrData
+     * @return 结果集
+     */
 	public function insertRow($tabName, $arrData)
 	{
 		$iField = $iData = " (";
@@ -122,7 +134,12 @@ class DDb
 		return $this->exeSql($sql);
 	}
 
-	//update更新语句
+    /** update更新语句
+     * @param $tabName
+     * @param $arrData
+     * @param $where
+     * @return 结果集
+     */
 	public function updateRow($tabName, $arrData, $where)
 	{
 		$sql = "update $tabName set ";

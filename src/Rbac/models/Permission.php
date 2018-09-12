@@ -5,7 +5,10 @@
  * Date: 2018/9/10
  * Time: 20:31
  */
-require_once("../common/Utils.php");
+
+namespace Rbac\models;
+
+use Rbac\common\Utils;
 
 class Permission
 {
@@ -22,7 +25,7 @@ class Permission
         if(!empty($db) && is_object($db)){
             $this->db = $db;
         }else{
-            throw new Exception("RBAC db is not object,please check your parameters");
+            throw new \Exception("RBAC db is not object,please check your parameters");
         }
     }
 
@@ -54,6 +57,22 @@ class Permission
     public function allPermissionList()
     {
         $sql = "SELECT `name`,`description`,`url` FROM permission ORDER BY create_time DESC ";
+
+        $list = $list = $this->db->getAll($sql);
+
+        return $list ? $list : [];
+    }
+
+    /**
+     * 用户角色信息获取
+     * @param $uid
+     * @return array
+     */
+    public function roleListByUid($uid)
+    {
+        $uid = intval($uid);
+
+        $sql = "SELECT r.`id`,r.`name`,r.`create_time` FROM user_role AS ur LEFT JOIN role AS r ON ur.role_id=r.id WHERE ur.uid={$uid} ORDER BY r.create_time DESC";
 
         $list = $list = $this->db->getAll($sql);
 
@@ -136,20 +155,27 @@ class Permission
         return boolval($res);
     }
 
-
-    /**
-     * 用户角色信息获取
-     * @param $uid
-     * @return array
+    /** 删除权限节点
+     * @param $permissionId
+     * @return bool
      */
-    public function roleListByUid($uid)
+    public function deletePermission($permissionId)
     {
-        $uid = intval($uid);
+        $permissionId = intval($permissionId);
+        $sql = "DELETE FROM permission WHERE id = {$permissionId};";
+        $res = $this->db->exeSql($sql);
+        return boolval($res);
+    }
 
-        $sql = "SELECT r.`id`,r.`name`,r.`create_time` FROM user_role AS ur LEFT JOIN role AS r ON ur.role_id=r.id WHERE ur.uid={$uid} ORDER BY r.create_time DESC";
-
-        $list = $list = $this->db->getAll($sql);
-
-        return $list ? $list : [];
+    /** 删除角色
+     * @param $roleId
+     * @return bool
+     */
+    public function deleteRole($roleId)
+    {
+        $roleId = intval($roleId);
+        $sql = "DELETE FROM role WHERE id = {$roleId};";
+        $res = $this->db->exeSql($sql);
+        return boolval($res);
     }
 }

@@ -6,8 +6,11 @@
  * Time: 10:34
  */
 
-require_once("models/Permission.php");
-require_once("common/DDb.php");
+namespace Rbac;
+
+use Rbac\common\DDb;
+use Rbac\models\Permission;
+
 class Rbac
 {
     private $permissionObj = null;
@@ -26,8 +29,8 @@ class Rbac
     {
         try{
             $db = new DDb($host, $root, $password, $dbName,$port);
-        }catch (Exception $e){
-            throw new Exception("connect DB error");
+        }catch (\Exception $e){
+            throw new \Exception("connect DB error");
         }
         $this->permissionObj = new Permission($db);
     }
@@ -43,9 +46,11 @@ class Rbac
         if($uid == self::ADMIN_UID){  //超级管理员
             return true;
         }
+
         $router = str_replace('//', '/', $router);
         $permission = $this->permissionObj->permissionListByUid($uid);
         $hasPriv = false;
+
         if (!empty($permission)) {
             foreach ($permission as $v) {
                 if ($router == $v['url']) {
