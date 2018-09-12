@@ -7,7 +7,7 @@
  */
 
 require_once("models/Permission.php");
-require_once("common/Mysqli.php");
+require_once("common/DDb.php");
 class Rbac
 {
     private $permissionObj = null;
@@ -25,7 +25,7 @@ class Rbac
     public function  __construct($host,$root,$password,$dbName,$port)
     {
         try{
-            $db = new DB($host, $root, $password, $dbName,$port);
+            $db = new DDb($host, $root, $password, $dbName,$port);
         }catch (Exception $e){
             throw new Exception("connect DB error");
         }
