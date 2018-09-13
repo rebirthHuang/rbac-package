@@ -7,6 +7,8 @@
  */
 require_once("../vendor/autoload.php");
 
+$name = $_GET['name'];
+$description = $_GET['description'];
 
 $obj = new \Rbac\Rbac("127.0.0.1","root","root","test",3306);
 
@@ -17,7 +19,7 @@ $permissionList = $obj->permissionList(1);
 $isCheck = $obj->check(2,'/add/role');
 
 //权限节点添加
-$res = $obj->addPermission("添加用户","添加用户","/add/user");
+$res = $obj->addPermission($name,$description,"/add/user");
 
 var_dump($res);exit;
 
